@@ -1,0 +1,19 @@
+{
+  "name": "tshafer/laravel-likeable",
+  "description": "Likeable Polymorphic Eloquent Models for Laravel 5",
+  "require": {
+    "php": ">=5.5.9",
+    "tshafer/laravel-service-provider": "1.0.*@dev",
+    "illuminate/database": "~5.0|~5.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Tshafer\\Likeable\\": "src/"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0.x-dev"
+    }
+  }
+}

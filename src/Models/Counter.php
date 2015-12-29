@@ -1,15 +1,14 @@
 <?php
 
-    namespace Tshafer\Likeable\Models;
+namespace Tshafer\Likeable\Models;
 
-    use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
     /**
      * Class Counter.
      */
     class Counter extends Model
     {
-
         /**
          * @var string
          */
@@ -18,7 +17,7 @@
         /**
          * @var array
          */
-        protected $guarded = [ 'id', 'created_at', 'updated_at' ];
+        protected $guarded = ['id', 'created_at', 'updated_at'];
 
         /**
          * @return \Illuminate\Database\Eloquent\Relations\MorphTo

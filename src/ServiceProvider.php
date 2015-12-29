@@ -26,11 +26,4 @@
                  ->publishMigrations();
         }
 
-        /**
-         *
-         */
-        public function register()
-        {
-            //
-        }
     }

@@ -1,17 +1,14 @@
 <?php
 
-    namespace Tshafer\Likeable;
+namespace Tshafer\Likeable;
 
-    use Tshafer\ServiceProvider\ServiceProvider as BaseProvider;
+use Tshafer\ServiceProvider\ServiceProvider as BaseProvider;
 
     /**
-     * Class ServiceProvider
-     *
-     * @package Tshafer\Likeable
+     * Class ServiceProvider.
      */
     class ServiceProvider extends BaseProvider
     {
-
         /**
          * @var string
          */
@@ -22,8 +19,7 @@
          */
         public function boot()
         {
-            $this->setup( __DIR__ )
+            $this->setup(__DIR__)
                  ->publishMigrations();
         }
-
     }

@@ -1,8 +1,8 @@
 <?php
 
-    namespace Tshafer\Likeable\Traits;
+namespace Tshafer\Likeable\Traits;
 
-    use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
     use Tshafer\Likeable\Models\Counter;
     use Tshafer\Likeable\Models\Like;
 
@@ -11,13 +11,12 @@
      */
     trait Likeable
     {
-
         /**
          * @return \Illuminate\Database\Eloquent\Relations\MorphMany
          */
         public function likes()
         {
-            return $this->morphMany( Like::class, 'likeable' );
+            return $this->morphMany(Like::class, 'likeable');
         }
 
         /**
@@ -25,7 +24,7 @@
          */
         public function likeCounter()
         {
-            return $this->morphOne( Counter::class, 'likeable' );
+            return $this->morphOne(Counter::class, 'likeable');
         }
 
         /**
@@ -42,9 +41,9 @@
          *
          * @return mixed
          */
-        public function getLikeCountByDate( $from, $to = null )
+        public function getLikeCountByDate($from, $to = null)
         {
-            return Like::countByDate( $this, $from, $to );
+            return Like::countByDate($this, $from, $to);
         }
 
         /**
@@ -60,16 +59,16 @@
          *
          * @return bool
          */
-        public function like( Model $likedBy )
+        public function like(Model $likedBy)
         {
-            if ($this->getLikedRecord( $likedBy )) {
+            if ($this->getLikedRecord($likedBy)) {
                 return false;
             }
 
-            $like                = new Like();
-            $like->liked_by_id   = $likedBy->id;
-            $like->liked_by_type = get_class( $likedBy );
-            $this->likes()->save( $like );
+            $like = new Like();
+            $like->liked_by_id = $likedBy->id;
+            $like->liked_by_type = get_class($likedBy);
+            $this->likes()->save($like);
 
             $this->incrementCounter();
         }
@@ -79,9 +78,9 @@
          *
          * @return bool
          */
-        public function dislike( Model $likedBy )
+        public function dislike(Model $likedBy)
         {
-            if ( ! $like = $this->getLikedRecord( $likedBy )) {
+            if (!$like = $this->getLikedRecord($likedBy)) {
                 return false;
             }
 
@@ -96,12 +95,12 @@
          *
          * @return mixed
          */
-        public function scopeWhereLiked( $query, Model $model )
+        public function scopeWhereLiked($query, Model $model)
         {
-            return $query->whereHas( 'likes', function ( $query ) use ( $model ) {
-                $query->where( 'liked_by_id', $model->id );
-                $query->where( 'liked_by_type', get_class( $model ) );
-            } );
+            return $query->whereHas('likes', function ($query) use ($model) {
+                $query->where('liked_by_id', $model->id);
+                $query->where('liked_by_type', get_class($model));
+            });
         }
 
         /**
@@ -110,13 +109,13 @@
         private function incrementCounter()
         {
             if ($counter = $this->likeCounter()->first()) {
-                $counter->increment( 'count', 1 );
+                $counter->increment('count', 1);
                 $counter->save();
             } else {
                 $counter = new Counter();
-                $counter->fill( [ 'count' => 1 ] );
+                $counter->fill(['count' => 1]);
 
-                $this->likeCounter()->save( $counter );
+                $this->likeCounter()->save($counter);
             }
 
             return $counter;
@@ -128,7 +127,7 @@
         private function decrementCounter()
         {
             if ($counter = $this->likeCounter()->first()) {
-                $counter->decrement( 'count', 1 );
+                $counter->decrement('count', 1);
                 $counter->count ? $counter->save() : $counter->delete();
             }
 
@@ -140,11 +139,11 @@
          *
          * @return mixed
          */
-        private function getLikedRecord( Model $model )
+        private function getLikedRecord(Model $model)
         {
             return $this->likes()
-                        ->where( 'liked_by_id', $model->id )
-                        ->where( 'liked_by_type', get_class( $model ) )
+                        ->where('liked_by_id', $model->id)
+                        ->where('liked_by_type', get_class($model))
                         ->first();
         }
 
@@ -154,8 +153,8 @@
         private function liked()
         {
             return (bool) $this->likes()
-                               ->where( 'liked_by_id', $this->id )
-                               ->where( 'liked_by_type', get_class( $this ) )
+                               ->where('liked_by_id', $this->id)
+                               ->where('liked_by_type', get_class($this))
                                ->count();
         }
     }

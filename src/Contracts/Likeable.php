@@ -1,15 +1,14 @@
 <?php
 
-    namespace Tshafer\Likeable\Contracts;
+namespace Tshafer\Likeable\Contracts;
 
-    use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
     /**
      * Interface Likeable.
      */
     interface Likeable
     {
-
         /**
          * @return \Illuminate\Database\Eloquent\Relations\MorphMany
          */
@@ -31,7 +30,7 @@
          *
          * @return mixed
          */
-        public function getLikeCountByDate( $from, $to = null );
+        public function getLikeCountByDate($from, $to = null);
 
         /**
          * @return mixed
@@ -43,14 +42,14 @@
          *
          * @return mixed
          */
-        public function like( Model $likedBy );
+        public function like(Model $likedBy);
 
         /**
          * @param Model $likedBy
          *
          * @return mixed
          */
-        public function dislike( Model $likedBy );
+        public function dislike(Model $likedBy);
 
         /**
          * @param       $query
@@ -58,5 +57,5 @@
          *
          * @return mixed
          */
-        public function scopeWhereLiked( $query, Model $model );
+        public function scopeWhereLiked($query, Model $model);
     }

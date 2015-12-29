@@ -1,8 +1,8 @@
 <?php
 
-    namespace Tshafer\Likeable\Models;
+namespace Tshafer\Likeable\Models;
 
-    use Carbon\Carbon;
+use Carbon\Carbon;
     use Illuminate\Database\Eloquent\Model;
 
     /**
@@ -10,7 +10,6 @@
      */
     class Like extends Model
     {
-
         /**
          * @var string
          */
@@ -19,7 +18,7 @@
         /**
          * @var array
          */
-        protected $guarded = [ 'id', 'created_at', 'updated_at' ];
+        protected $guarded = ['id', 'created_at', 'updated_at'];
 
         /**
          * @return \Illuminate\Database\Eloquent\Relations\MorphTo
@@ -34,7 +33,7 @@
          *
          * @return mixed
          */
-        public static function count( Model $likeable )
+        public static function count(Model $likeable)
         {
             return $likeable->likes()
                             ->count();
@@ -47,20 +46,20 @@
          *
          * @return mixed
          */
-        public static function countByDate( Model $likeable, $from, $to = null )
+        public static function countByDate(Model $likeable, $from, $to = null)
         {
             $query = $likeable->likes();
 
-            if ( ! empty( $to )) {
-                $range = [ new Carbon( $from ), new Carbon( $to ) ];
+            if (!empty($to)) {
+                $range = [new Carbon($from), new Carbon($to)];
             } else {
                 $range = [
-                    ( new Carbon( $from ) )->startOfDay(),
-                    ( new Carbon( $to ) )->endOfDay(),
+                    ( new Carbon($from) )->startOfDay(),
+                    ( new Carbon($to) )->endOfDay(),
                 ];
             }
 
-            return $query->whereBetween( 'created_at', $range )
+            return $query->whereBetween('created_at', $range)
                          ->count();
         }
 
@@ -69,9 +68,9 @@
          *
          * @return mixed
          */
-        public static function like( Model $likeable )
+        public static function like(Model $likeable)
         {
-            return ( new static() )->cast( $likeable, 1 );
+            return ( new static() )->cast($likeable, 1);
         }
 
         /**
@@ -79,17 +78,17 @@
          *
          * @return mixed
          */
-        public static function dislike( Model $likeable )
+        public static function dislike(Model $likeable)
         {
-            return ( new static() )->cast( $likeable, - 1 );
+            return ( new static() )->cast($likeable, -1);
         }
 
         /**
          * @param $value
          */
-        public function setValueAttribute( $value )
+        public function setValueAttribute($value)
         {
-            $this->attributes[ 'value' ] = ( $value == - 1 ) ? - 1 : 1;
+            $this->attributes[ 'value' ] = ($value == -1) ? -1 : 1;
         }
 
         /**
@@ -98,17 +97,17 @@
          *
          * @return bool
          */
-        protected function cast( Model $likeable, $value = 1 )
+        protected function cast(Model $likeable, $value = 1)
         {
-            if ( ! $likeable->exists) {
+            if (!$likeable->exists) {
                 return false;
             }
 
             $vote = new static();
-            $vote->fill( compact( 'value' ) );
+            $vote->fill(compact('value'));
 
             return $vote->likeable()
-                        ->associate( $likeable )
+                        ->associate($likeable)
                         ->save();
         }
     }
